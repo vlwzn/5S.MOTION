@@ -76,24 +76,5 @@
         "size": 9282733
       }
     ]
-  },
-  {
-    "slug": "asd",
-    "title": "asd",
-    "year": "2026",
-    "client": "wea",
-    "studio": "5S.MOTION",
-    "description": "asd",
-    "image": "/uploads/asd/1793279318522-2a2d1fb9.jpg",
-    "imageAlt": "asd",
-    "gallery": [
-      {
-        "type": "image",
-        "src": "/uploads/asd/1793279318522-2a2d1fb9.jpg",
-        "alt": "asd",
-        "name": "my lovely Arin.jpg",
-        "size": 46182
-      }
-    ]
   }
 ]
