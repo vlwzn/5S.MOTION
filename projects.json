@@ -1,57 +1,5 @@
 [
   {
-    "slug": "lazuna",
-    "title": "Lazuna Chiken",
-    "year": "2025",
-    "client": "Lazuna Chiken",
-    "studio": "5S.MOTION",
-    "description": "Informasi singkat tentang project Lazuna akan ditambahkan di sini.",
-    "image": "/uploads/lazuna/1793253128855-8d7bf2e5.mp4",
-    "imageAlt": "Lazuna",
-    "gallery": [
-      {
-        "type": "video",
-        "src": "/uploads/lazuna/1793253128855-8d7bf2e5.mp4",
-        "alt": "Lazuna",
-        "name": "PREVIEW.v2.mp4",
-        "size": 2970827
-      }
-    ]
-  },
-  {
-    "slug": "bank-sulselbar",
-    "title": "DISBUD (Dinas Kebudayaan)",
-    "year": "2025",
-    "client": "PEMKOT MAKASSAR",
-    "studio": "5S.MOTION",
-    "description": "Motion Logo DISBUD",
-    "image": "/uploads/bank-sulselbar/1793255104110-62741aa3.mp4",
-    "imageAlt": "DISBUD (Dinas Kebudayaan)",
-    "gallery": [
-      {
-        "type": "video",
-        "src": "/uploads/bank-sulselbar/1793254056275-1dcaa92a.mp4",
-        "alt": "Bank SulSelBar",
-        "name": "Elemen Grafis Preview 1.mp4",
-        "size": 11500118
-      },
-      {
-        "type": "video",
-        "src": "/uploads/bank-sulselbar/1793255104110-62741aa3.mp4",
-        "alt": "DISBUD (Dinas Kebudayaan)",
-        "name": "Logo Configuration Final.mp4",
-        "size": 8697424
-      },
-      {
-        "type": "video",
-        "src": "/uploads/bank-sulselbar/1793255104121-6e22b0fa.mp4",
-        "alt": "DISBUD (Dinas Kebudayaan)",
-        "name": "Media Social Implementation.mp4",
-        "size": 17571386
-      }
-    ]
-  },
-  {
     "slug": "hut-kota-makassar",
     "title": "HUT Kota Makassar",
     "year": "2025",
@@ -74,6 +22,63 @@
         "alt": "HUT Kota Makassar",
         "name": "Motion Logo 16x19.mp4",
         "size": 9282733
+      }
+    ]
+  },
+  {
+    "slug": "hut-kota-bantaeng",
+    "title": "HUT Kota Bantaeng",
+    "year": "2025",
+    "client": "ETHNICA",
+    "studio": "5S.MOTION",
+    "description": "Bumper Logo",
+    "image": "/uploads/hut-kota-bantaeng/1793282412101-c0d5d1b0.mp4",
+    "imageAlt": "HUT Kota Bantaeng",
+    "gallery": [
+      {
+        "type": "video",
+        "src": "/uploads/hut-kota-bantaeng/1793282412101-c0d5d1b0.mp4",
+        "alt": "HUT Kota Bantaeng",
+        "name": "Festival Bantaeng.mp4",
+        "size": 26272260
+      }
+    ]
+  },
+  {
+    "slug": "hut-kota-gowa",
+    "title": "HUT Kota Gowa",
+    "year": "2026",
+    "client": "ETHNICA",
+    "studio": "5S.MOTION",
+    "description": "Motion Logo",
+    "image": "/uploads/hut-kota-gowa/1793282590649-0ac70c4a.mp4",
+    "imageAlt": "HUT Kota Gowa",
+    "gallery": [
+      {
+        "type": "video",
+        "src": "/uploads/hut-kota-gowa/1793282590649-0ac70c4a.mp4",
+        "alt": "HUT Kota Gowa",
+        "name": "Hut Gowa 705-Festival Balla Lompoa2.mp4",
+        "size": 18208258
+      }
+    ]
+  },
+  {
+    "slug": "dinas-kebudayaan-kota-makassar",
+    "title": "Dinas Kebudayaan - Kota Makassar",
+    "year": "2026",
+    "client": "PEMKOT MAKASSAR",
+    "studio": "5S.MOTION",
+    "description": "Motion Logo",
+    "image": "/uploads/dinas-kebudayaan-kota-makassar/1793282788196-64acfdd4.mp4",
+    "imageAlt": "Dinas Kebudayaan - Kota Makassar",
+    "gallery": [
+      {
+        "type": "video",
+        "src": "/uploads/dinas-kebudayaan-kota-makassar/1793282788196-64acfdd4.mp4",
+        "alt": "Dinas Kebudayaan - Kota Makassar",
+        "name": "Logo Configuration Final.mp4",
+        "size": 8697424
       }
     ]
   }
