@@ -41,10 +41,10 @@ const routes = new Map([
   ["/dashboard/", "dashboard.html"],
   ["/dashboard.html", "dashboard.html"],
   ["/projects.json", "projects.json"],
-  ["/styles.css", "styles.css"],
-  ["/script.js", "script.js"],
-  ["/dashboard.css", "dashboard.css"],
-  ["/dashboard.js", "dashboard.js"],
+  ["/assets/css/styles.css", "assets/css/styles.css"],
+  ["/assets/css/dashboard.css", "assets/css/dashboard.css"],
+  ["/assets/js/script.js", "assets/js/script.js"],
+  ["/assets/js/dashboard.js", "assets/js/dashboard.js"],
 ]);
 
 class HttpError extends Error {
