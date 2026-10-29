@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "build:pages": "node scripts/build-pages.mjs",
     "dev": "node server.mjs",
     "start": "node server.mjs"
   }

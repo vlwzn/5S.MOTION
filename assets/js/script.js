@@ -1,4 +1,19 @@
 const projectPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const siteBasePath =
+  document.querySelector('meta[name="site-base"]')?.content.replace(/\/$/, "") ?? "";
+
+function sitePath(path) {
+  if (!siteBasePath || !path.startsWith("/") || path.startsWith(`${siteBasePath}/`)) {
+    return path;
+  }
+  return `${siteBasePath}${path}`;
+}
+
+function projectPath(slug) {
+  return siteBasePath
+    ? `${sitePath("/project.html")}?slug=${encodeURIComponent(slug)}`
+    : `/project/${slug}`;
+}
 
 function getElement(selector) {
   const element = document.querySelector(selector);
@@ -16,7 +31,7 @@ function createTextElement(tagName, className, text) {
 }
 
 async function loadProjects() {
-  const response = await fetch("/projects.json");
+  const response = await fetch(sitePath("/projects.json"));
   if (!response.ok) {
     throw new Error(`Unable to load projects (${response.status})`);
   }
@@ -89,7 +104,7 @@ function setActiveProject(project, index, projects) {
 
 function getProjectPreview(project) {
   const fallbackMedia = project.gallery.find((item) => item.src || item.image);
-  const source = project.image || (fallbackMedia?.src ?? fallbackMedia?.image ?? "");
+  const source = sitePath(project.image || (fallbackMedia?.src ?? fallbackMedia?.image ?? ""));
   return {
     source,
     alt: project.imageAlt || fallbackMedia?.alt || project.title,
@@ -155,7 +170,7 @@ function createProjectPreview(project) {
 function createProjectLink(project, index, projects) {
   const link = document.createElement("a");
   link.className = "work-link";
-  link.href = `/project/${project.slug}`;
+  link.href = projectPath(project.slug);
   link.dataset.projectLink = project.slug;
 
   link.append(
@@ -235,7 +250,7 @@ function createGalleryItem(item) {
   const figure = document.createElement("figure");
   figure.className = `detail-gallery-item${item.detail ? " detail-gallery-item--detail" : ""}`;
 
-  const source = item.src || item.image;
+  const source = sitePath(item.src || item.image);
   const isVideo = item.type === "video" || /\.(?:mp4|webm|mov)$/i.test(source);
   if (isVideo) {
     const video = document.createElement("video");
@@ -256,7 +271,9 @@ function createGalleryItem(item) {
 }
 
 function initializeProjectPage(projects) {
-  const slug = window.location.pathname.split("/").filter(Boolean).at(-1);
+  const slug =
+    new URLSearchParams(window.location.search).get("slug") ||
+    window.location.pathname.split("/").filter(Boolean).at(-1);
   const projectIndex = projects.findIndex((project) => project.slug === slug);
   const project = projects[projectIndex];
 
@@ -294,12 +311,15 @@ function initializeProjectPage(projects) {
 
   const nextProject = projects[(projectIndex + 1) % projects.length];
   const nextLink = getElement("[data-next-project]");
-  nextLink.href = `/project/${nextProject.slug}`;
+  nextLink.href = projectPath(nextProject.slug);
   getElement("[data-next-title]").textContent = nextProject.title;
 }
 
 async function initialize() {
   try {
+    document.querySelectorAll("[data-site-home]").forEach((link) => {
+      link.setAttribute("href", sitePath("/"));
+    });
     const projects = await loadProjects();
     if (document.body.dataset.page === "project") {
       initializeProjectPage(projects);
