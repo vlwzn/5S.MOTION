@@ -146,7 +146,7 @@ function createProjectPreview(project) {
   preview.setAttribute("aria-hidden", "true");
 
   if (preview instanceof HTMLVideoElement) {
-    preview.muted = true;
+    preview.muted = false;
     preview.loop = true;
     preview.playsInline = true;
     preview.preload = "metadata";
