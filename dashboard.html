@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f2e9" />
+    <title>Dashboard — 5S.MOTION</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/dashboard.css" />
+    <script src="/dashboard.js" defer></script>
+  </head>
+  <body class="dashboard-body">
+    <main class="dashboard">
+      <header class="dashboard-header">
+        <a class="dashboard-wordmark" href="/">5S.<br />MOTION</a>
+        <div class="dashboard-heading">
+          <span class="eyebrow">Workspace / Projects</span>
+          <h1>Dashboard</h1>
+        </div>
+        <div class="dashboard-header-actions">
+          <span class="save-status" data-save-status aria-live="polite">Memuat project...</span>
+          <a class="dashboard-site-link" href="/">Lihat website <span aria-hidden="true">↗</span></a>
+        </div>
+      </header>
+
+      <div class="dashboard-layout">
+        <aside class="dashboard-sidebar" aria-label="Daftar project">
+          <div class="sidebar-heading">
+            <span class="eyebrow">Project kamu</span>
+            <button class="add-project-button" type="button" data-new-project aria-label="Tambah project">+</button>
+          </div>
+          <nav class="dashboard-project-list" data-project-list></nav>
+          <p class="sidebar-note">Setiap perubahan tersimpan lokal di folder project ini.</p>
+        </aside>
+
+        <section class="project-editor" aria-label="Editor project" data-editor hidden>
+          <div class="editor-heading">
+            <div>
+              <span class="eyebrow" data-editor-kicker>Project / Edit</span>
+              <h2 data-editor-title>Project baru</h2>
+            </div>
+            <button class="delete-project-button" type="button" data-delete-project>Hapus project</button>
+          </div>
+
+          <form class="project-form" data-project-form>
+            <div class="form-grid">
+              <label class="form-field form-field--wide">
+                <span>Nama project</span>
+                <input name="title" type="text" maxlength="80" placeholder="Contoh: Brand Film" required />
+              </label>
+              <label class="form-field">
+                <span>Slug URL</span>
+                <input name="slug" type="text" maxlength="80" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" placeholder="brand-film" required />
+                <small>Huruf kecil dan tanda hubung.</small>
+              </label>
+              <label class="form-field">
+                <span>Tahun</span>
+                <input name="year" type="text" maxlength="12" placeholder="2026" required />
+              </label>
+              <label class="form-field">
+                <span>Client</span>
+                <input name="client" type="text" maxlength="100" placeholder="Nama client" required />
+              </label>
+              <label class="form-field">
+                <span>Studio</span>
+                <input name="studio" type="text" maxlength="100" value="5S.MOTION" required />
+              </label>
+              <label class="form-field form-field--wide">
+                <span>Deskripsi project</span>
+                <textarea name="description" rows="3" maxlength="1200" placeholder="Ceritakan project ini..."></textarea>
+              </label>
+            </div>
+            <div class="form-actions">
+              <span class="form-feedback" data-form-feedback role="status"></span>
+              <button class="save-project-button" type="submit" data-save-project>Simpan perubahan</button>
+            </div>
+          </form>
+
+          <section class="media-section" aria-labelledby="media-heading">
+            <div class="media-heading">
+              <div>
+                <span class="eyebrow">Gallery</span>
+                <h3 id="media-heading">Foto &amp; video</h3>
+                <p>PNG, JPG, GIF, MP4, WebM, MOV · Maks. 64 MB per file.</p>
+              </div>
+              <label class="upload-button">
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/gif,video/mp4,video/webm,video/quicktime,.png,.jpg,.jpeg,.gif,.mp4,.webm,.mov"
+                  multiple
+                  data-media-input
+                />
+                <span aria-hidden="true">+</span> Tambah media
+              </label>
+            </div>
+            <div class="media-grid" data-media-grid></div>
+            <p class="empty-media" data-empty-media>Belum ada media. Tambahkan foto atau video untuk memulai.</p>
+          </section>
+        </section>
+
+        <section class="dashboard-empty" data-empty-state>
+          <span class="eyebrow">5S.MOTION / WORKSPACE</span>
+          <h2>Semua project,<br />satu tempat.</h2>
+          <p>Pilih project untuk mengedit, atau buat project baru untuk memulai.</p>
+          <button class="save-project-button" type="button" data-empty-new-project>+ Tambah project</button>
+        </section>
+      </div>
+    </main>
+    <div class="dashboard-toast" data-toast role="status" aria-live="polite"></div>
+  </body>
+</html>

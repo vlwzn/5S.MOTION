@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="5S.MOTION — an independent motion and design studio."
+    />
+    <meta name="theme-color" content="#f5f2e9" />
+    <title>5S.MOTION — Lazuna</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/script.js" defer></script>
+  </head>
+  <body class="home-page">
+    <main class="page-shell">
+      <header class="masthead">
+        <a class="wordmark" href="/" aria-label="5S.MOTION home">
+          <span>5S.</span>
+          <span>MOTION</span>
+        </a>
+        <p class="studio-note">Motion<br />&amp; Design Studio</p>
+      </header>
+
+      <section class="work" aria-labelledby="project-title">
+        <div class="work-layout">
+          <div class="work-display">
+            <div class="work-meta">
+              <span class="eyebrow">Selected work</span>
+              <span class="work-index" data-work-index></span>
+            </div>
+
+            <figure class="project" data-project>
+              <div class="project-art" data-art>
+                <span class="art-caption" data-art-caption></span>
+                <span class="preview-cursor" aria-hidden="true">VIEW <span>↗</span></span>
+              </div>
+            </figure>
+
+            <div class="project-info">
+              <div class="project-heading">
+                <h1 id="project-title" data-project-title></h1>
+              </div>
+            </div>
+          </div>
+
+          <nav class="work-list" aria-label="Selected projects" data-work-list>
+            <span class="eyebrow work-list-label">Works</span>
+            <!-- <span class="work-list-note">Hover to preview</span> -->
+          </nav>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>© 5S.MOTION</span>
+        <span class="coordinates" aria-live="off"><span data-x>00</span>° / <span data-y>00</span>°</span>
+        <span data-footer-project></span>
+      </footer>
+    </main>
+    <p class="load-error" data-load-error role="alert" hidden>Projects could not be loaded.</p>
+  </body>
+</html>
