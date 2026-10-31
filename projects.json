@@ -95,21 +95,21 @@
     ]
   },
   {
-    "slug": "vfx-campign-maxride",
-    "title": "VFX Campign Maxride",
+    "slug": "vfx-for-maxride-campaign",
+    "title": "VFX for Maxride Campaign",
     "year": "2026",
     "client": "5S.MOTION",
     "studio": "5S.MOTION",
     "description": "VFX",
-    "image": "/uploads/vfx-campign-maxride/1793452905803-a44f79c0.mp4",
-    "imageAlt": "VFX Campign Maxride",
+    "image": "/uploads/vfx-for-maxride-campaign/1793454464723-25549e20.mp4",
+    "imageAlt": "VFX for Maxride Campaign",
     "gallery": [
       {
         "type": "video",
-        "src": "/uploads/vfx-campign-maxride/1793452905803-a44f79c0.mp4",
-        "alt": "VFX Campign Maxride",
-        "name": "maxride VFX_rev2.mp4",
-        "size": 64282292
+        "src": "/uploads/vfx-for-maxride-campaign/1793454464723-25549e20.mp4",
+        "alt": "VFX for Maxride Campaign",
+        "name": "maxride.mp4",
+        "size": 14998315
       }
     ]
   }
