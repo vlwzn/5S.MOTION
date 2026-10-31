@@ -57,25 +57,6 @@
     ]
   },
   {
-    "slug": "dinas-kebudayaan-kota-makassar",
-    "title": "Dinas Kebudayaan - Kota Makassar",
-    "year": "2026",
-    "client": "PEMKOT MAKASSAR",
-    "studio": "5S.MOTION",
-    "description": "Motion Logo",
-    "image": "/uploads/dinas-kebudayaan-kota-makassar/1793282788196-64acfdd4.mp4",
-    "imageAlt": "Dinas Kebudayaan - Kota Makassar",
-    "gallery": [
-      {
-        "type": "video",
-        "src": "/uploads/dinas-kebudayaan-kota-makassar/1793282788196-64acfdd4.mp4",
-        "alt": "Dinas Kebudayaan - Kota Makassar",
-        "name": "Logo Configuration Final.mp4",
-        "size": 8697424
-      }
-    ]
-  },
-  {
     "slug": "hut-ri-79-adgi-mks",
     "title": "HUT RI 79 - ADGI MKS",
     "year": "2023",
@@ -91,6 +72,25 @@
         "alt": "HUT RI 79 - ADGI MKS",
         "name": "untitled.mp4",
         "size": 12319079
+      }
+    ]
+  },
+  {
+    "slug": "dinas-kebudayaan-kota-makassar",
+    "title": "Dinas Kebudayaan - Kota Makassar",
+    "year": "2026",
+    "client": "PEMKOT MAKASSAR",
+    "studio": "5S.MOTION",
+    "description": "Motion Logo",
+    "image": "/uploads/dinas-kebudayaan-kota-makassar/1793282788196-64acfdd4.mp4",
+    "imageAlt": "Dinas Kebudayaan - Kota Makassar",
+    "gallery": [
+      {
+        "type": "video",
+        "src": "/uploads/dinas-kebudayaan-kota-makassar/1793282788196-64acfdd4.mp4",
+        "alt": "Dinas Kebudayaan - Kota Makassar",
+        "name": "Logo Configuration Final.mp4",
+        "size": 8697424
       }
     ]
   },
