@@ -114,19 +114,19 @@
     ]
   },
   {
-    "slug": "behind-the-stage-concert",
-    "title": "Behind The Stage - Concert",
+    "slug": "beyond-the-stage-concert",
+    "title": "Beyond The Stage - Concert",
     "year": "2026",
     "client": "5S.MOTION",
     "studio": "5S.MOTION",
     "description": "Motion Logo",
-    "image": "/uploads/behind-the-stage-concert/1793454938010-f5a335cb.mp4",
-    "imageAlt": "Behind The Stage - Concert",
+    "image": "/uploads/beyond-the-stage-concert/1793455249258-f1d918f1.mp4",
+    "imageAlt": "Beyond The Stage - Concert",
     "gallery": [
       {
         "type": "video",
-        "src": "/uploads/behind-the-stage-concert/1793454938010-f5a335cb.mp4",
-        "alt": "Behind The Stage - Concert",
+        "src": "/uploads/beyond-the-stage-concert/1793455249258-f1d918f1.mp4",
+        "alt": "Beyond The Stage - Concert",
         "name": "BTS Logo Animation.mp4",
         "size": 15976920
       }
