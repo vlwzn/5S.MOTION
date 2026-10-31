@@ -14,6 +14,9 @@ let projects = [];
 let currentProject = null;
 let isCreating = false;
 let isDirty = false;
+let draggedProjectLink = null;
+let draggedProjectItems = [];
+let projectDropHandled = false;
 let toastTimeout;
 
 function showToast(message, isError = false) {
@@ -65,6 +68,8 @@ function renderProjectList() {
     const button = document.createElement("button");
     button.className = "dashboard-project-link";
     button.type = "button";
+    button.draggable = true;
+    button.dataset.projectSlug = project.slug;
     button.classList.toggle("is-active", currentProject?.slug === project.slug);
     button.addEventListener("click", () => selectProject(project.slug));
 
@@ -81,6 +86,80 @@ function renderProjectList() {
     projectList.append(button);
   });
 }
+
+async function saveProjectOrder() {
+  const previousProjects = [...projects];
+  const orderedSlugs = [...projectList.children].map((item) => item.dataset.projectSlug);
+  const projectBySlug = new Map(projects.map((project) => [project.slug, project]));
+  projects = orderedSlugs.map((slug) => projectBySlug.get(slug));
+  renderProjectList();
+  setStatus("Menyimpan urutan...");
+
+  try {
+    await apiRequest("/api/projects/order", {
+      method: "PUT",
+      body: JSON.stringify({ slugs: orderedSlugs }),
+    });
+    setStatus(isDirty ? "Perubahan belum disimpan" : "Urutan tersimpan");
+    showToast("Urutan project tersimpan.");
+  } catch (error) {
+    console.error(error);
+    projects = previousProjects;
+    renderProjectList();
+    setStatus("Gagal menyimpan urutan", true);
+    showToast(error.message, true);
+  }
+}
+
+projectList.addEventListener("dragstart", (event) => {
+  const projectLink = event.target.closest(".dashboard-project-link");
+  if (!projectLink) {
+    return;
+  }
+  draggedProjectLink = projectLink;
+  draggedProjectItems = [...projectList.children];
+  projectDropHandled = false;
+  event.dataTransfer.effectAllowed = "move";
+  event.dataTransfer.setData("text/plain", projectLink.dataset.projectSlug);
+  projectLink.classList.add("is-dragging");
+});
+
+projectList.addEventListener("dragover", (event) => {
+  event.preventDefault();
+  if (!draggedProjectLink) {
+    return;
+  }
+
+  const target = event.target.closest(".dashboard-project-link");
+  if (!target || target === draggedProjectLink) {
+    return;
+  }
+
+  const bounds = target.getBoundingClientRect();
+  const insertBeforeTarget = event.clientY < bounds.top + bounds.height / 2;
+  projectList.insertBefore(
+    draggedProjectLink,
+    insertBeforeTarget ? target : target.nextSibling,
+  );
+});
+
+projectList.addEventListener("drop", (event) => {
+  event.preventDefault();
+  if (draggedProjectLink) {
+    projectDropHandled = true;
+    void saveProjectOrder();
+  }
+});
+
+projectList.addEventListener("dragend", () => {
+  if (!projectDropHandled) {
+    draggedProjectItems.forEach((item) => projectList.append(item));
+  }
+  draggedProjectLink?.classList.remove("is-dragging");
+  draggedProjectLink = null;
+  draggedProjectItems = [];
+  projectDropHandled = false;
+});
 
 function fillForm(project) {
   form.elements.namedItem("title").value = project.title || "";

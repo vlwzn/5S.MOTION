@@ -215,6 +215,29 @@ function sendJson(response, status, value) {
 }
 
 async function handleApi(request, response, pathname) {
+  if (pathname === "/api/projects/order" && request.method === "PUT") {
+    const body = await readJsonBody(request, 32 * 1024);
+    const slugs = body?.slugs;
+    const orderedSlugs = await updateProjects((projects) => {
+      if (
+        !Array.isArray(slugs) ||
+        slugs.length !== projects.length ||
+        slugs.some((slug) => typeof slug !== "string") ||
+        new Set(slugs).size !== projects.length ||
+        slugs.some((slug) => !projects.some((project) => project.slug === slug))
+      ) {
+        throw new HttpError(400, "Project order must include each project exactly once.");
+      }
+
+      const projectsBySlug = new Map(projects.map((project) => [project.slug, project]));
+      const orderedProjects = slugs.map((slug) => projectsBySlug.get(slug));
+      projects.splice(0, projects.length, ...orderedProjects);
+      return slugs;
+    });
+    sendJson(response, 200, { slugs: orderedSlugs });
+    return true;
+  }
+
   if (pathname === "/api/projects" && request.method === "GET") {
     sendJson(response, 200, await readProjects());
     return true;

@@ -128,7 +128,13 @@
   font-family: var(--mono);
   font-size: 10px;
   text-decoration: none;
+  cursor: grab;
   transition: color 180ms ease;
+}
+
+.dashboard-project-link.is-dragging {
+  cursor: grabbing;
+  opacity: 0.45;
 }
 
 .dashboard-project-link:hover,
