@@ -11,13 +11,6 @@
     "gallery": [
       {
         "type": "video",
-        "src": "/uploads/hut-kota-makassar/1793255144857-7e43d84f.mp4",
-        "alt": "HUT Kota Makassar",
-        "name": "Billboard Panlos.mp4",
-        "size": 41593011
-      },
-      {
-        "type": "video",
         "src": "/uploads/hut-kota-makassar/1793255274937-4ffff904.mp4",
         "alt": "HUT Kota Makassar",
         "name": "Motion Logo 16x19.mp4",
@@ -98,6 +91,25 @@
         "alt": "HUT RI 79 - ADGI MKS",
         "name": "untitled.mp4",
         "size": 12319079
+      }
+    ]
+  },
+  {
+    "slug": "vfx-campign-maxride",
+    "title": "VFX Campign Maxride",
+    "year": "2026",
+    "client": "5S.MOTION",
+    "studio": "5S.MOTION",
+    "description": "VFX",
+    "image": "/uploads/vfx-campign-maxride/1793452905803-a44f79c0.mp4",
+    "imageAlt": "VFX Campign Maxride",
+    "gallery": [
+      {
+        "type": "video",
+        "src": "/uploads/vfx-campign-maxride/1793452905803-a44f79c0.mp4",
+        "alt": "VFX Campign Maxride",
+        "name": "maxride VFX_rev2.mp4",
+        "size": 64282292
       }
     ]
   }
