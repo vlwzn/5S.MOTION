@@ -81,5 +81,24 @@
         "size": 8697424
       }
     ]
+  },
+  {
+    "slug": "hut-ri-79-adgi-mks",
+    "title": "HUT RI 79 - ADGI MKS",
+    "year": "2023",
+    "client": "ADGI MKS",
+    "studio": "5S.MOTION",
+    "description": "Motion Logo",
+    "image": "/uploads/hut-ri-79-adgi-mks/1793446787681-1c01ed61.mp4",
+    "imageAlt": "HUT RI 79 - ADGI MKS",
+    "gallery": [
+      {
+        "type": "video",
+        "src": "/uploads/hut-ri-79-adgi-mks/1793446787681-1c01ed61.mp4",
+        "alt": "HUT RI 79 - ADGI MKS",
+        "name": "untitled.mp4",
+        "size": 12319079
+      }
+    ]
   }
 ]
