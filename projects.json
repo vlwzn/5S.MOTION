@@ -38,19 +38,19 @@
     ]
   },
   {
-    "slug": "hut-kota-gowa",
+    "slug": "hut-kab-gowa",
     "title": "HUT Kab.Gowa",
     "year": "2026",
     "client": "ETHNICA",
     "studio": "5S.MOTION",
     "description": "Motion Logo",
-    "image": "/uploads/hut-kota-gowa/1793282590649-0ac70c4a.mp4",
-    "imageAlt": "HUT Kota Gowa",
+    "image": "/uploads/hut-kab-gowa/1793282590649-0ac70c4a.mp4",
+    "imageAlt": "HUT Kab.Gowa",
     "gallery": [
       {
         "type": "video",
-        "src": "/uploads/hut-kota-gowa/1793282590649-0ac70c4a.mp4",
-        "alt": "HUT Kota Gowa",
+        "src": "/uploads/hut-kab-gowa/1793282590649-0ac70c4a.mp4",
+        "alt": "HUT Kab.Gowa",
         "name": "Hut Gowa 705-Festival Balla Lompoa2.mp4",
         "size": 18208258
       }
