@@ -112,5 +112,24 @@
         "size": 14998315
       }
     ]
+  },
+  {
+    "slug": "behind-the-stage-concert",
+    "title": "Behind The Stage - Concert",
+    "year": "2026",
+    "client": "5S.MOTION",
+    "studio": "5S.MOTION",
+    "description": "Motion Logo",
+    "image": "/uploads/behind-the-stage-concert/1793454938010-f5a335cb.mp4",
+    "imageAlt": "Behind The Stage - Concert",
+    "gallery": [
+      {
+        "type": "video",
+        "src": "/uploads/behind-the-stage-concert/1793454938010-f5a335cb.mp4",
+        "alt": "Behind The Stage - Concert",
+        "name": "BTS Logo Animation.mp4",
+        "size": 15976920
+      }
+    ]
   }
 ]
