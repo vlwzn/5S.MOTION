@@ -131,5 +131,24 @@
         "size": 15976920
       }
     ]
+  },
+  {
+    "slug": "anniversary-lazuna",
+    "title": "Anniversary Lazuna",
+    "year": "2026",
+    "client": "Lazuna Chiken",
+    "studio": "5S.MOTION",
+    "description": "Motion Logo",
+    "image": "/uploads/anniversary-lazuna/1793458792747-4b0f9d67.mp4",
+    "imageAlt": "Anniversary Lazuna",
+    "gallery": [
+      {
+        "type": "video",
+        "src": "/uploads/anniversary-lazuna/1793458792747-4b0f9d67.mp4",
+        "alt": "Anniversary Lazuna",
+        "name": "Lazuna.mp4",
+        "size": 678757
+      }
+    ]
   }
 ]
