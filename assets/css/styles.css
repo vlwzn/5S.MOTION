@@ -330,14 +330,23 @@ a {
   letter-spacing: 0.04em;
   opacity: 0;
   pointer-events: none;
+  text-decoration: none;
   transform: translate(-50%, -45%) scale(0.84);
   transition: opacity 220ms ease, transform 220ms ease;
   backdrop-filter: blur(7px);
 }
 
-.project:hover .preview-cursor {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+.preview-cursor[hidden] {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project:hover .preview-cursor,
+  .project:focus-within .preview-cursor {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 .project-info {
@@ -642,9 +651,15 @@ h1 {
     border-left: 0;
   }
 
-  .work-list-label,
-  .work-list-note {
+  .work-list-label {
     display: none;
+  }
+
+  .work-list-note {
+    grid-column: 1 / -1;
+    margin-top: 6px;
+    font-size: 8px;
+    text-align: center;
   }
 
   .work-link {
@@ -662,6 +677,20 @@ h1 {
 
   .project-art {
     aspect-ratio: 1.25;
+  }
+
+  .preview-cursor {
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    left: auto;
+    width: auto;
+    height: auto;
+    padding: 10px 12px;
+    border-radius: 999px;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
   }
 
   .home-page .project-art {

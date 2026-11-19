@@ -1,6 +1,7 @@
 const projectPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const siteBasePath =
   document.querySelector('meta[name="site-base"]')?.content.replace(/\/$/, "") ?? "";
+const touchPreviewQuery = window.matchMedia("(hover: none) and (pointer: coarse)");
 
 function sitePath(path) {
   if (!siteBasePath || !path.startsWith("/") || path.startsWith(`${siteBasePath}/`)) {
@@ -81,7 +82,11 @@ function setActiveProject(project, index, projects) {
     preview.setAttribute("aria-hidden", String(!isActive));
     if (preview instanceof HTMLVideoElement) {
       if (isActive) {
-        preview.play().catch((error) => console.error("Unable to play homepage preview.", error));
+        preview.play().catch((error) => {
+          if (!(error instanceof DOMException && error.name === "AbortError")) {
+            console.error("Unable to play homepage preview.", error);
+          }
+        });
       } else {
         preview.pause();
       }
@@ -89,6 +94,10 @@ function setActiveProject(project, index, projects) {
   });
 
   getElement("[data-project-title]").textContent = project.title;
+  const projectView = getElement("[data-project-view]");
+  projectView.href = projectPath(project.slug);
+  projectView.setAttribute("aria-label", `View ${project.title}`);
+  projectView.hidden = false;
   getElement("[data-work-index]").textContent =
     `${String(index + 1).padStart(2, "0")} / ${String(projects.length).padStart(2, "0")}`;
   getElement("[data-footer-project]").textContent = `${project.title} — ${project.year}`;
@@ -183,6 +192,12 @@ function createProjectLink(project, index, projects) {
 
   link.addEventListener("pointerenter", () => setActiveProject(project, index, projects));
   link.addEventListener("focus", () => setActiveProject(project, index, projects));
+  link.addEventListener("click", (event) => {
+    if (touchPreviewQuery.matches) {
+      event.preventDefault();
+      setActiveProject(project, index, projects);
+    }
+  });
   return link;
 }
 
@@ -193,6 +208,7 @@ function initializeHome(projects) {
 
   if (projects.length === 0) {
     getElement("[data-project-title]").textContent = "No projects yet";
+    getElement("[data-project-view]").hidden = true;
     getElement("[data-work-index]").textContent = "00 / 00";
     getElement("[data-footer-project]").textContent = "";
     getElement("[data-art-caption]").textContent = "5S.MOTION";
