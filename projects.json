@@ -150,5 +150,24 @@
         "size": 678757
       }
     ]
+  },
+  {
+    "slug": "kasat-mata",
+    "title": "Kasat Mata",
+    "year": "2023",
+    "client": "ETHNICA",
+    "studio": "5S.MOTION",
+    "description": "Motion Bumper",
+    "image": "/uploads/kasat-mata/1795181200455-566273bd.mp4",
+    "imageAlt": "Kasat Mata",
+    "gallery": [
+      {
+        "type": "video",
+        "src": "/uploads/kasat-mata/1795181200455-566273bd.mp4",
+        "alt": "Kasat Mata",
+        "name": "Kasat Mata1.mp4",
+        "size": 50544433
+      }
+    ]
   }
 ]
