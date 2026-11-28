@@ -565,6 +565,11 @@ h1 {
   text-transform: uppercase;
 }
 
+.contact-block .contact-description {
+  font-size: 14px;
+  line-height: 1.75;
+}
+
 .contact-link {
   margin-top: auto;
   padding-bottom: 5px;
@@ -1118,6 +1123,10 @@ h1 {
     font-size: 12px;
   }
 
+  .contact-block .contact-description {
+    font-size: 12px;
+  }
+
   .contact-block {
     min-height: 140px;
   }
@@ -1190,6 +1199,11 @@ h1 {
     line-height: 1.5;
   }
 
+  .contact-block .contact-description {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
   .contact-block {
     min-height: 115px;
   }
@@ -1233,6 +1247,11 @@ h1 {
   }
 
   .info-section p {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .contact-block .contact-description {
     font-size: 11px;
     line-height: 1.4;
   }
@@ -1285,6 +1304,10 @@ h1 {
   }
 
   .info-section p {
+    font-size: 11px;
+  }
+
+  .contact-block .contact-description {
     font-size: 11px;
   }
 
