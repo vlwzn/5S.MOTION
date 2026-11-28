@@ -24,6 +24,78 @@ function getElement(selector) {
   return element;
 }
 
+function applySiteFonts(settings) {
+  for (const field of ["headingFont", "bodyFont"]) {
+    if (
+      typeof settings[field] !== "string" ||
+      !/^[A-Za-z0-9][A-Za-z0-9 -]*$/.test(settings[field])
+    ) {
+      throw new Error(`Invalid site font setting: ${field}`);
+    }
+  }
+
+  document.documentElement.style.setProperty(
+    "--serif",
+    `"${settings.headingFont}", Georgia, serif`,
+  );
+  document.documentElement.style.setProperty(
+    "--sans",
+    `"${settings.bodyFont}", Arial, sans-serif`,
+  );
+  const fontUrl = new URL("https://fonts.googleapis.com/css2");
+  [settings.headingFont, settings.bodyFont, "DM Mono"].forEach((family) => {
+    fontUrl.searchParams.append("family", family);
+  });
+  fontUrl.searchParams.set("display", "swap");
+  let fontStylesheet = document.querySelector("[data-site-fonts]");
+  if (!(fontStylesheet instanceof HTMLLinkElement)) {
+    fontStylesheet = document.createElement("link");
+    fontStylesheet.rel = "stylesheet";
+    fontStylesheet.dataset.siteFonts = "true";
+    document.head.append(fontStylesheet);
+  }
+  fontStylesheet.href = fontUrl.href;
+}
+
+async function loadSiteFonts() {
+  const response = await fetch(sitePath("/site-settings.json"));
+  if (!response.ok) {
+    throw new Error(`Unable to load site font settings (${response.status})`);
+  }
+  applySiteFonts(await response.json());
+}
+
+async function loadSiteContent(page) {
+  const response = await fetch(sitePath("/site-content.json"));
+  if (!response.ok) {
+    throw new Error(`Unable to load site content (${response.status})`);
+  }
+  const siteContent = await response.json();
+  const content = siteContent?.[page];
+  if (!content || typeof content !== "object" || Array.isArray(content)) {
+    throw new Error(`Site content for ${page} is missing.`);
+  }
+
+  document.querySelectorAll("[data-content-field]").forEach((element) => {
+    const field = element.dataset.contentField;
+    if (typeof content[field] !== "string") {
+      throw new Error(`Site content field is missing: ${field}`);
+    }
+    element.textContent =
+      field === "footerCta" ? `${content[field]} ↗` : content[field];
+  });
+
+  if (page === "contact") {
+    const email = content.email;
+    if (typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      throw new Error("Contact page email is invalid.");
+    }
+    const emailLink = getElement("[data-content-email]");
+    emailLink.href = `mailto:${email}`;
+    emailLink.textContent = `${email} ↗`;
+  }
+}
+
 function createTextElement(tagName, className, text) {
   const element = document.createElement(tagName);
   element.className = className;
@@ -336,6 +408,25 @@ async function initialize() {
     document.querySelectorAll("[data-site-home]").forEach((link) => {
       link.setAttribute("href", sitePath("/"));
     });
+    document.querySelectorAll("[data-page-link]").forEach((link) => {
+      const page = link.dataset.pageLink;
+      link.setAttribute("href", sitePath(`/${page}.html`));
+    });
+    try {
+      await loadSiteFonts();
+    } catch (error) {
+      console.error("Unable to apply site fonts.", error);
+      const notice = document.createElement("p");
+      notice.className = "site-content-error";
+      notice.setAttribute("role", "alert");
+      notice.textContent = "Font website gagal dimuat. Menggunakan font cadangan.";
+      document.body.append(notice);
+    }
+    if (["about", "contact"].includes(document.body.dataset.page)) {
+      await loadSiteContent(document.body.dataset.page);
+      return;
+    }
+
     const projects = await loadProjects();
     if (document.body.dataset.page === "project") {
       initializeProjectPage(projects);
@@ -345,11 +436,18 @@ async function initialize() {
     initializeHome(projects);
   } catch (error) {
     console.error(error);
+    const page = document.body.dataset.page;
     const errorElement = document.querySelector(
-      document.body.dataset.page === "project" ? "[data-detail-message]" : "[data-load-error]",
+      ["about", "contact"].includes(page)
+        ? "[data-site-content-error]"
+        : page === "project"
+          ? "[data-detail-message]"
+          : "[data-load-error]",
     );
     if (errorElement instanceof HTMLElement) {
-      errorElement.textContent = "Projects could not be loaded. Please try again later.";
+      errorElement.textContent = ["about", "contact"].includes(page)
+        ? "Konten halaman gagal dimuat. Coba muat ulang halaman."
+        : "Projects could not be loaded. Please try again later.";
       errorElement.hidden = false;
     }
   }

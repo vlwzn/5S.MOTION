@@ -15,11 +15,41 @@ import { fileURLToPath } from "node:url";
 
 const root = resolve(fileURLToPath(new URL(".", import.meta.url)));
 const projectFile = join(root, "projects.json");
+const siteContentFile = join(root, "site-content.json");
+const siteSettingsFile = join(root, "site-settings.json");
 const uploadRoot = join(root, "uploads");
 const maxUploadBytes = 64 * 1024 * 1024;
 const maxJsonBytes = 90 * 1024 * 1024;
 const projectSlugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const fileNamePattern = /^[a-z0-9-]+\.(?:png|jpe?g|gif|mp4|webm|mov)$/;
+const siteContentFields = {
+  about: {
+    eyebrow: 80,
+    title: 120,
+    intro: 1200,
+    locationLabel: 50,
+    location: 120,
+    practiceLabel: 50,
+    practice: 120,
+    disciplinesLabel: 50,
+    disciplines: 180,
+    approachLabel: 50,
+    approach: 1200,
+    servicesLabel: 50,
+    services: 600,
+    footerCta: 80,
+  },
+  contact: {
+    eyebrow: 80,
+    title: 120,
+    businessLabel: 80,
+    businessDescription: 800,
+    email: 254,
+    studioLabel: 80,
+    studioLocation: 200,
+    footerCta: 80,
+  },
+};
 const contentTypes = {
   ".css": "text/css; charset=utf-8",
   ".gif": "image/gif",
@@ -37,10 +67,18 @@ const routes = new Map([
   ["/", "index.html"],
   ["/index.html", "index.html"],
   ["/project.html", "project.html"],
+  ["/about", "about.html"],
+  ["/about/", "about.html"],
+  ["/about.html", "about.html"],
+  ["/contact", "contact.html"],
+  ["/contact/", "contact.html"],
+  ["/contact.html", "contact.html"],
   ["/dashboard", "dashboard.html"],
   ["/dashboard/", "dashboard.html"],
   ["/dashboard.html", "dashboard.html"],
   ["/projects.json", "projects.json"],
+  ["/site-content.json", "site-content.json"],
+  ["/site-settings.json", "site-settings.json"],
   ["/assets/css/styles.css", "assets/css/styles.css"],
   ["/assets/css/dashboard.css", "assets/css/dashboard.css"],
   ["/assets/js/script.js", "assets/js/script.js"],
@@ -55,6 +93,8 @@ class HttpError extends Error {
 }
 
 let writeQueue = Promise.resolve();
+let siteContentWriteQueue = Promise.resolve();
+let siteSettingsWriteQueue = Promise.resolve();
 
 async function readProjects() {
   const contents = await readFile(projectFile, "utf8");
@@ -63,6 +103,107 @@ async function readProjects() {
     throw new Error("projects.json must contain a project array.");
   }
   return projects;
+}
+
+function validateSiteContent(page, input) {
+  const fields = siteContentFields[page];
+  if (!fields || !input || typeof input !== "object" || Array.isArray(input)) {
+    throw new HttpError(400, "Konten halaman tidak valid.");
+  }
+
+  const content = {};
+  for (const [field, maxLength] of Object.entries(fields)) {
+    if (typeof input[field] !== "string") {
+      throw new HttpError(400, `Kolom ${field} harus berupa teks.`);
+    }
+    const value = input[field].trim();
+    if (value.length > maxLength) {
+      throw new HttpError(400, `Kolom ${field} melebihi ${maxLength} karakter.`);
+    }
+    content[field] = value;
+  }
+
+  if (!content.eyebrow || !content.title) {
+    throw new HttpError(400, "Label dan judul halaman wajib diisi.");
+  }
+  if (
+    page === "contact" &&
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(content.email)
+  ) {
+    throw new HttpError(400, "Alamat email harus valid.");
+  }
+  return content;
+}
+
+async function readSiteContent() {
+  const content = JSON.parse(await readFile(siteContentFile, "utf8"));
+  if (!content || typeof content !== "object" || Array.isArray(content)) {
+    throw new Error("site-content.json must contain an object.");
+  }
+  return Object.fromEntries(
+    Object.keys(siteContentFields).map((page) => [
+      page,
+      validateSiteContent(page, content[page]),
+    ]),
+  );
+}
+
+function validateSiteSettings(input) {
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    throw new HttpError(400, "Pengaturan font tidak valid.");
+  }
+  const settings = {};
+  for (const field of ["headingFont", "bodyFont"]) {
+    if (
+      typeof input[field] !== "string" ||
+      input[field].trim().length > 80 ||
+      !/^[A-Za-z0-9][A-Za-z0-9 -]*$/.test(input[field].trim())
+    ) {
+      throw new HttpError(400, `Nama ${field === "headingFont" ? "font heading" : "font body"} tidak valid.`);
+    }
+    settings[field] = input[field].trim();
+  }
+  return settings;
+}
+
+async function readSiteSettings() {
+  return validateSiteSettings(JSON.parse(await readFile(siteSettingsFile, "utf8")));
+}
+
+function updateSiteSettings(input) {
+  const transaction = siteSettingsWriteQueue.then(async () => {
+    const settings = validateSiteSettings(input);
+    const temporaryFile = `${siteSettingsFile}.${randomUUID()}.tmp`;
+    try {
+      await writeFile(temporaryFile, `${JSON.stringify(settings, null, 2)}\n`, "utf8");
+      await rename(temporaryFile, siteSettingsFile);
+    } catch (error) {
+      await unlink(temporaryFile).catch(() => {});
+      throw error;
+    }
+    return settings;
+  });
+  siteSettingsWriteQueue = transaction.catch(() => {});
+  return transaction;
+}
+
+function updateSiteContent(page, input) {
+  const transaction = siteContentWriteQueue.then(async () => {
+    const siteContent = await readSiteContent();
+    const updatedContent = validateSiteContent(page, input);
+    siteContent[page] = updatedContent;
+    const temporaryFile = `${siteContentFile}.${randomUUID()}.tmp`;
+    try {
+      await writeFile(temporaryFile, `${JSON.stringify(siteContent, null, 2)}\n`, "utf8");
+      await rename(temporaryFile, siteContentFile);
+    } catch (error) {
+      await unlink(temporaryFile).catch(() => {});
+      throw error;
+    }
+    return updatedContent;
+  });
+  siteContentWriteQueue = transaction.catch(() => {});
+  return transaction;
 }
 
 function updateProjects(mutator) {
@@ -215,6 +356,32 @@ function sendJson(response, status, value) {
 }
 
 async function handleApi(request, response, pathname) {
+  if (pathname === "/api/site-settings" && request.method === "GET") {
+    sendJson(response, 200, await readSiteSettings());
+    return true;
+  }
+
+  if (pathname === "/api/site-settings" && request.method === "PUT") {
+    const body = await readJsonBody(request, 8 * 1024);
+    const settings = await updateSiteSettings(body);
+    sendJson(response, 200, settings);
+    return true;
+  }
+
+  if (pathname === "/api/site-content" && request.method === "GET") {
+    sendJson(response, 200, await readSiteContent());
+    return true;
+  }
+
+  const siteContentMatch = pathname.match(/^\/api\/site-content\/(about|contact)$/);
+  if (siteContentMatch && request.method === "PUT") {
+    const [, page] = siteContentMatch;
+    const body = await readJsonBody(request, 32 * 1024);
+    const content = await updateSiteContent(page, body);
+    sendJson(response, 200, { page, content });
+    return true;
+  }
+
   if (pathname === "/api/projects/order" && request.method === "PUT") {
     const body = await readJsonBody(request, 32 * 1024);
     const slugs = body?.slugs;
@@ -549,6 +716,7 @@ const server = createServer(async (request, response) => {
   }
 });
 
-server.listen(4173, "127.0.0.1", () => {
-  console.log("5S.MOTION is running at http://127.0.0.1:4173");
+const port = Number(process.env.PORT ?? 4173);
+server.listen(port, "127.0.0.1", () => {
+  console.log(`5S.MOTION is running at http://127.0.0.1:${port}`);
 });

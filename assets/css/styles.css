@@ -133,6 +133,42 @@ a {
   color: var(--muted);
 }
 
+.masthead-nav {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(28px, 4vw, 56px);
+  margin-right: 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.masthead-nav a {
+  position: relative;
+  padding: 2px 0 7px;
+  text-decoration: none;
+}
+
+.masthead-nav a::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: var(--ink);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 260ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.masthead-nav a:hover::after,
+.masthead-nav a:focus-visible::after,
+.masthead-nav a.is-active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
 .work {
   display: flex;
   flex: 1;
@@ -381,6 +417,187 @@ h1 {
   animation: rise-in 800ms 220ms both;
 }
 
+.info-page {
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.info-shell {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.info-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 100%;
+  max-width: 1160px;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 2vh 0;
+}
+
+.info-heading {
+  display: grid;
+  grid-template-columns: 176px minmax(0, 1fr);
+  align-items: start;
+}
+
+.info-heading h1 {
+  max-width: 13ch;
+  font-size: clamp(48px, 7vw, 92px);
+  line-height: 0.92;
+  white-space: pre-line;
+}
+
+.info-heading .eyebrow {
+  padding-top: 10px;
+  color: var(--muted);
+}
+
+.info-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 176px;
+  align-items: start;
+  gap: clamp(40px, 9vw, 130px);
+  margin-left: calc(176px + clamp(24px, 4vw, 56px));
+}
+
+.info-intro > p,
+.contact-block > p {
+  max-width: 34ch;
+  margin: 0;
+  font-size: clamp(16px, 1.45vw, 20px);
+  line-height: 1.55;
+}
+
+.info-content p[data-content-field="location"],
+.info-content p[data-content-field="studioLocation"] {
+  white-space: pre-line;
+}
+
+.info-facts {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.info-facts div {
+  padding: 10px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.info-facts dt {
+  color: var(--muted);
+}
+
+.info-facts dd {
+  margin: 4px 0 0;
+}
+
+.info-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 9vw, 130px);
+  margin-left: calc(176px + clamp(24px, 4vw, 56px));
+}
+
+.info-section {
+  max-width: 470px;
+  border-top: 1px solid var(--rule);
+  padding-top: 14px;
+}
+
+.info-section h2 {
+  color: var(--muted);
+  margin: 0 0 22px;
+}
+
+.info-section p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.contact-content {
+  justify-content: space-evenly;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 9vw, 130px);
+  margin-left: calc(176px + clamp(24px, 4vw, 56px));
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+}
+
+.contact-block {
+  display: flex;
+  min-height: clamp(150px, 22vh, 210px);
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.contact-block .eyebrow {
+  margin: 0 0 30px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.025em;
+  line-height: 1.65;
+  text-transform: uppercase;
+}
+
+.contact-block .contact-location {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.025em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.contact-link {
+  margin-top: auto;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.info-footer a {
+  text-decoration: none;
+}
+
+.site-content-error {
+  position: fixed;
+  z-index: 5;
+  right: 24px;
+  bottom: 24px;
+  max-width: min(420px, calc(100vw - 48px));
+  margin: 0;
+  padding: 12px 16px;
+  background: #8c3022;
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.site-content-error[hidden] {
+  display: none;
+}
+
 .coordinates {
   position: absolute;
   left: 50%;
@@ -612,6 +829,81 @@ h1 {
     padding-top: 20px;
   }
 
+  .info-page .info-shell {
+    width: calc(100% - 40px);
+    height: 100%;
+    min-height: 0;
+    padding: 20px 0 12px;
+  }
+
+  .masthead-nav {
+    gap: 18px;
+    font-size: 9px;
+  }
+
+  .info-content {
+    justify-content: space-evenly;
+    padding: 12px 0;
+  }
+
+  .info-heading {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .info-heading h1 {
+    font-size: clamp(40px, 11vw, 64px);
+  }
+
+  .info-heading .eyebrow {
+    padding-top: 0;
+  }
+
+  .info-intro {
+    grid-template-columns: minmax(0, 1fr) minmax(130px, 0.7fr);
+    gap: 24px;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .info-sections,
+  .contact-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-left: 0;
+  }
+
+  .info-intro > p,
+  .contact-block > p {
+    max-width: 34ch;
+    font-size: 14px;
+  }
+
+  .info-facts {
+    max-width: none;
+    font-size: 8px;
+  }
+
+  .info-sections {
+    gap: 24px;
+  }
+
+  .contact-grid {
+    padding-top: 12px;
+  }
+
+  .contact-block {
+    min-height: 150px;
+  }
+
+  .contact-block .eyebrow {
+    margin-bottom: 20px;
+  }
+
+  .contact-link {
+    font-size: 9px;
+  }
+
   .home-page .page-shell {
     padding-bottom: 12px;
   }
@@ -789,6 +1081,51 @@ h1 {
     width: calc(100% - 32px);
   }
 
+  .info-page .info-shell {
+    width: calc(100% - 32px);
+  }
+
+  .info-heading h1 {
+    font-size: clamp(38px, 11vw, 48px);
+  }
+
+  .info-intro {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .info-intro > p,
+  .contact-block > p {
+    font-size: 13px;
+  }
+
+  .info-facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+  }
+
+  .info-facts div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .info-sections,
+  .contact-grid {
+    gap: 14px;
+  }
+
+  .info-section p {
+    font-size: 12px;
+  }
+
+  .contact-block {
+    min-height: 140px;
+  }
+
+  .contact-link {
+    font-size: 8px;
+  }
+
   .work-link {
     grid-template-columns: 17px minmax(0, 1fr);
   }
@@ -820,6 +1157,87 @@ h1 {
   }
 }
 
+@media (max-height: 600px) {
+  .info-page .info-shell {
+    padding-top: 12px;
+    padding-bottom: 10px;
+  }
+
+  .info-page .masthead {
+    min-height: 54px;
+    flex-basis: 54px;
+  }
+
+  .info-content {
+    padding: 4px 0;
+  }
+
+  .info-heading h1 {
+    font-size: clamp(38px, 6vw, 64px);
+  }
+
+  .info-intro > p,
+  .contact-block > p {
+    font-size: 13px;
+  }
+
+  .info-sections {
+    gap: 24px;
+  }
+
+  .info-section p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .contact-block {
+    min-height: 115px;
+  }
+
+  .info-page .footer {
+    min-height: 28px;
+  }
+}
+
+@media (min-width: 761px) and (max-height: 700px) {
+  .info-content {
+    justify-content: space-between;
+  }
+
+  .info-heading h1 {
+    font-size: clamp(36px, 5vw, 46px);
+  }
+
+  .info-intro {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .info-intro > p {
+    max-width: none;
+    font-size: 12px;
+  }
+
+  .info-facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .info-facts div {
+    padding: 6px 0;
+  }
+
+  .info-section h2 {
+    margin-bottom: 8px;
+  }
+
+  .info-section p {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+}
+
 @media (max-width: 760px) and (max-height: 600px) {
   .home-page .page-shell {
     padding-top: 10px;
@@ -829,6 +1247,53 @@ h1 {
   .home-page .masthead {
     min-height: 48px;
     flex-basis: 48px;
+  }
+
+  .info-page .info-shell {
+    padding-top: 10px;
+    padding-bottom: 8px;
+  }
+
+  .info-page .masthead {
+    min-height: 48px;
+    flex-basis: 48px;
+  }
+
+  .info-content {
+    padding: 2px 0;
+  }
+
+  .info-heading {
+    gap: 8px;
+  }
+
+  .info-heading h1 {
+    font-size: clamp(34px, 9vw, 44px);
+  }
+
+  .info-intro > p,
+  .contact-block > p {
+    font-size: 12px;
+  }
+
+  .info-facts {
+    font-size: 7px;
+  }
+
+  .info-facts div {
+    padding: 5px 0;
+  }
+
+  .info-section p {
+    font-size: 11px;
+  }
+
+  .contact-block {
+    min-height: 95px;
+  }
+
+  .info-page .footer {
+    min-height: 24px;
   }
 
   .home-page .studio-note {

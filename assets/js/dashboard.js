@@ -1,19 +1,58 @@
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const allowedExtensions = new Set(["png", "jpg", "jpeg", "gif", "mp4", "webm", "mov"]);
 const maxFileSize = 64 * 1024 * 1024;
+const siteContentFields = {
+  about: [
+    "eyebrow",
+    "title",
+    "intro",
+    "locationLabel",
+    "location",
+    "practiceLabel",
+    "practice",
+    "disciplinesLabel",
+    "disciplines",
+    "approachLabel",
+    "approach",
+    "servicesLabel",
+    "services",
+    "footerCta",
+  ],
+  contact: [
+    "eyebrow",
+    "title",
+    "businessLabel",
+    "businessDescription",
+    "email",
+    "studioLabel",
+    "studioLocation",
+    "footerCta",
+  ],
+};
 const form = document.querySelector("[data-project-form]");
 const editor = document.querySelector("[data-editor]");
+const contentEditor = document.querySelector("[data-content-editor]");
+const contentForm = document.querySelector("[data-content-form]");
+const fontEditor = document.querySelector("[data-font-editor]");
+const fontForm = document.querySelector("[data-font-form]");
 const emptyState = document.querySelector("[data-empty-state]");
 const projectList = document.querySelector("[data-project-list]");
 const status = document.querySelector("[data-save-status]");
 const toast = document.querySelector("[data-toast]");
 const fileInput = document.querySelector("[data-media-input]");
 const formFeedback = document.querySelector("[data-form-feedback]");
+const contentFeedback = document.querySelector("[data-content-feedback]");
+const fontFeedback = document.querySelector("[data-font-feedback]");
 
 let projects = [];
+let siteContent = null;
+let siteSettings = null;
 let currentProject = null;
+let currentContentPage = null;
 let isCreating = false;
 let isDirty = false;
+let isContentDirty = false;
+let isFontsDirty = false;
 let draggedProjectLink = null;
 let draggedProjectItems = [];
 let projectDropHandled = false;
@@ -45,6 +84,30 @@ async function apiRequest(url, options = {}) {
     throw new Error(result.error || `Permintaan gagal (${response.status}).`);
   }
   return result;
+}
+
+function applySiteFonts(settings) {
+  document.documentElement.style.setProperty(
+    "--serif",
+    `"${settings.headingFont}", Georgia, serif`,
+  );
+  document.documentElement.style.setProperty(
+    "--sans",
+    `"${settings.bodyFont}", Arial, sans-serif`,
+  );
+  const fontUrl = new URL("https://fonts.googleapis.com/css2");
+  [settings.headingFont, settings.bodyFont, "DM Mono"].forEach((family) => {
+    fontUrl.searchParams.append("family", family);
+  });
+  fontUrl.searchParams.set("display", "swap");
+  let fontStylesheet = document.querySelector("[data-site-fonts]");
+  if (!(fontStylesheet instanceof HTMLLinkElement)) {
+    fontStylesheet = document.createElement("link");
+    fontStylesheet.rel = "stylesheet";
+    fontStylesheet.dataset.siteFonts = "true";
+    document.head.append(fontStylesheet);
+  }
+  fontStylesheet.href = fontUrl.href;
 }
 
 function getMediaSource(media) {
@@ -85,6 +148,82 @@ function renderProjectList() {
     button.append(number, name, year);
     projectList.append(button);
   });
+}
+
+function confirmDiscardChanges() {
+  return (
+    (!isDirty && !isContentDirty && !isFontsDirty) ||
+    window.confirm("Perubahan belum disimpan. Buang perubahan dan lanjutkan?")
+  );
+}
+
+function fillContentForm(page) {
+  const activeGroup = contentEditor.querySelector(`[data-content-fields="${page}"]`);
+  contentEditor.querySelectorAll("[data-content-fields]").forEach((group) => {
+    const isActive = group === activeGroup;
+    group.hidden = !isActive;
+    group.querySelectorAll("input, textarea").forEach((field) => {
+      field.disabled = !isActive;
+    });
+  });
+  siteContentFields[page].forEach((fieldName) => {
+    const field = activeGroup.querySelector(`[name="${fieldName}"]`);
+    field.value = siteContent[page][fieldName] || "";
+  });
+  document.querySelector("[data-content-editor-kicker]").textContent =
+    page === "about" ? "About" : "Contact";
+  document.querySelector("[data-content-editor-title]").textContent =
+    `Edit ${page === "about" ? "About" : "Contact"}`;
+  contentFeedback.textContent = "";
+  document.querySelectorAll("[data-content-tab]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.contentTab === page));
+  });
+  document.querySelector("[data-settings-tab]").setAttribute("aria-pressed", "false");
+}
+
+function selectContent(page) {
+  if (!confirmDiscardChanges()) {
+    return;
+  }
+  currentProject = null;
+  currentContentPage = page;
+  isCreating = false;
+  isDirty = false;
+  isContentDirty = false;
+  isFontsDirty = false;
+  emptyState.hidden = true;
+  editor.hidden = true;
+  contentEditor.hidden = false;
+  fontEditor.hidden = true;
+  fillContentForm(page);
+  renderProjectList();
+  setStatus("Tersimpan");
+  history.replaceState(null, "", `/dashboard?content=${page}`);
+}
+
+function selectFontSettings() {
+  if (!confirmDiscardChanges()) {
+    return;
+  }
+  currentProject = null;
+  currentContentPage = null;
+  isCreating = false;
+  isDirty = false;
+  isContentDirty = false;
+  isFontsDirty = false;
+  emptyState.hidden = true;
+  editor.hidden = true;
+  contentEditor.hidden = true;
+  fontEditor.hidden = false;
+  fontForm.elements.namedItem("headingFont").value = siteSettings.headingFont;
+  fontForm.elements.namedItem("bodyFont").value = siteSettings.bodyFont;
+  fontFeedback.textContent = "";
+  document.querySelectorAll("[data-content-tab]").forEach((button) => {
+    button.setAttribute("aria-pressed", "false");
+  });
+  document.querySelector("[data-settings-tab]").setAttribute("aria-pressed", "true");
+  setStatus("Tersimpan");
+  history.replaceState(null, "", "/dashboard?settings=fonts");
 }
 
 async function saveProjectOrder() {
@@ -267,7 +406,7 @@ function renderMedia() {
 }
 
 function selectProject(slug) {
-  if (isDirty && !window.confirm("Perubahan belum disimpan. Buang perubahan dan lanjutkan?")) {
+  if (!confirmDiscardChanges()) {
     return;
   }
 
@@ -276,10 +415,15 @@ function selectProject(slug) {
     return;
   }
   currentProject = project;
+  currentContentPage = null;
   isCreating = false;
   isDirty = false;
+  isContentDirty = false;
+  isFontsDirty = false;
   emptyState.hidden = true;
   editor.hidden = false;
+  contentEditor.hidden = true;
+  fontEditor.hidden = true;
   fillForm(project);
   renderMedia();
   renderProjectList();
@@ -298,7 +442,7 @@ function slugify(value) {
 }
 
 function startNewProject() {
-  if (isDirty && !window.confirm("Perubahan belum disimpan. Buang perubahan dan lanjutkan?")) {
+  if (!confirmDiscardChanges()) {
     return;
   }
   currentProject = {
@@ -312,10 +456,15 @@ function startNewProject() {
     imageAlt: "",
     gallery: [],
   };
+  currentContentPage = null;
   isCreating = true;
   isDirty = false;
+  isContentDirty = false;
+  isFontsDirty = false;
   emptyState.hidden = true;
   editor.hidden = false;
+  contentEditor.hidden = true;
+  fontEditor.hidden = true;
   fillForm(currentProject);
   renderMedia();
   renderProjectList();
@@ -386,6 +535,78 @@ async function saveProject(event) {
     console.error(error);
     formFeedback.textContent = error.message;
     setStatus("Gagal menyimpan", true);
+  } finally {
+    saveButton.disabled = false;
+  }
+}
+
+async function saveSiteContent(event) {
+  event.preventDefault();
+  if (!currentContentPage || !contentForm.reportValidity()) {
+    return;
+  }
+
+  const activeGroup = contentEditor.querySelector(
+    `[data-content-fields="${currentContentPage}"]`,
+  );
+  const payload = Object.fromEntries(
+    siteContentFields[currentContentPage].map((fieldName) => [
+      fieldName,
+      activeGroup.querySelector(`[name="${fieldName}"]`).value.trim(),
+    ]),
+  );
+  const saveButton = document.querySelector("[data-save-content]");
+  saveButton.disabled = true;
+  contentFeedback.textContent = "";
+  setStatus("Menyimpan konten...");
+  try {
+    const result = await apiRequest(`/api/site-content/${currentContentPage}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+    siteContent[currentContentPage] = result.content;
+    isContentDirty = false;
+    fillContentForm(currentContentPage);
+    setStatus("Tersimpan");
+    showToast(`Konten ${currentContentPage === "about" ? "About" : "Contact"} berhasil disimpan.`);
+  } catch (error) {
+    console.error(error);
+    contentFeedback.textContent = error.message;
+    setStatus("Gagal menyimpan konten", true);
+  } finally {
+    saveButton.disabled = false;
+  }
+}
+
+async function saveSiteFonts(event) {
+  event.preventDefault();
+  if (!fontForm.reportValidity()) {
+    return;
+  }
+
+  const settings = {
+    headingFont: fontForm.elements.namedItem("headingFont").value.trim(),
+    bodyFont: fontForm.elements.namedItem("bodyFont").value.trim(),
+  };
+  const saveButton = document.querySelector("[data-save-fonts]");
+  saveButton.disabled = true;
+  fontFeedback.textContent = "";
+  setStatus("Menyimpan font...");
+  try {
+    siteSettings = await apiRequest("/api/site-settings", {
+      method: "PUT",
+      body: JSON.stringify(settings),
+    });
+    applySiteFonts(siteSettings);
+    isFontsDirty = false;
+    fontForm.elements.namedItem("headingFont").value = siteSettings.headingFont;
+    fontForm.elements.namedItem("bodyFont").value = siteSettings.bodyFont;
+    setStatus("Tersimpan");
+    showToast("Font website berhasil disimpan.");
+  } catch (error) {
+    console.error(error);
+    fontFeedback.textContent = error.message;
+    setStatus("Gagal menyimpan font", true);
   } finally {
     saveButton.disabled = false;
   }
@@ -562,15 +783,48 @@ form.addEventListener("input", (event) => {
   }
 });
 form.addEventListener("submit", saveProject);
+contentForm.addEventListener("input", () => {
+  isContentDirty = true;
+  setStatus("Perubahan belum disimpan");
+});
+contentForm.addEventListener("submit", saveSiteContent);
+fontForm.addEventListener("input", () => {
+  isFontsDirty = true;
+  setStatus("Perubahan belum disimpan");
+});
+fontForm.addEventListener("submit", saveSiteFonts);
 fileInput.addEventListener("change", uploadMedia);
 document.querySelector("[data-new-project]").addEventListener("click", startNewProject);
 document.querySelector("[data-empty-new-project]").addEventListener("click", startNewProject);
 document.querySelector("[data-delete-project]").addEventListener("click", deleteProject);
+document.querySelectorAll("[data-content-tab]").forEach((button) => {
+  button.addEventListener("click", () => selectContent(button.dataset.contentTab));
+});
+document.querySelector("[data-settings-tab]").addEventListener("click", selectFontSettings);
 
 async function initializeDashboard() {
   try {
-    projects = await apiRequest("/api/projects");
+    const [loadedProjects, loadedContent, loadedSettings] = await Promise.all([
+      apiRequest("/api/projects"),
+      apiRequest("/api/site-content"),
+      apiRequest("/api/site-settings"),
+    ]);
+    projects = loadedProjects;
+    siteContent = loadedContent;
+    siteSettings = loadedSettings;
+    applySiteFonts(siteSettings);
     renderProjectList();
+    if (new URLSearchParams(location.search).get("settings") === "fonts") {
+      selectFontSettings();
+      return;
+    }
+
+    const requestedContent = new URLSearchParams(location.search).get("content");
+    if (requestedContent === "about" || requestedContent === "contact") {
+      selectContent(requestedContent);
+      return;
+    }
+
     const requestedProject = new URLSearchParams(location.search).get("project");
     if (requestedProject && projects.some((project) => project.slug === requestedProject)) {
       selectProject(requestedProject);

@@ -1,0 +1,28 @@
+{
+  "about": {
+    "eyebrow": "About the studio",
+    "title": "Ideas in motion,\nmade with intent.",
+    "intro": "5S.MOTION is an independent motion and design studio creating visual identities, moving images, and digital experiences for brands, culture, and community.",
+    "locationLabel": "Based in",
+    "location": "Makassar, Indonesia",
+    "practiceLabel": "Established",
+    "practice": "Independent studio",
+    "disciplinesLabel": "Disciplines",
+    "disciplines": "Motion · Design · Visual Direction",
+    "approachLabel": "Approach",
+    "approach": "We combine clear thinking, strong visual systems, and expressive motion to turn ideas into work that feels purposeful and memorable.",
+    "servicesLabel": "Services",
+    "services": "Motion design · Brand identity · Visual direction · Logo animation · Campaign visuals · Digital content",
+    "footerCta": "Get in touch"
+  },
+  "contact": {
+    "eyebrow": "Start a project",
+    "title": "Let’s make\nit move.",
+    "businessLabel": "New business",
+    "businessDescription": "Tell us about your project, timeline, and what you want to achieve.",
+    "email": "hello@5smotion.com",
+    "studioLabel": "Studio",
+    "studioLocation": "Makassar, South Sulawesi\nIndonesia",
+    "footerCta": "About the studio"
+  }
+}

@@ -2,7 +2,15 @@ import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
 
 const root = new URL("../", import.meta.url);
 const output = new URL("../dist/", import.meta.url);
-const staticFiles = ["index.html", "project.html", "projects.json"];
+const staticFiles = [
+  "index.html",
+  "about.html",
+  "contact.html",
+  "project.html",
+  "projects.json",
+  "site-content.json",
+  "site-settings.json",
+];
 
 await mkdir(output, { recursive: true });
 await Promise.all(

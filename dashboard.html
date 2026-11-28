@@ -7,10 +7,6 @@
     <title>Dashboard — 5S.MOTION</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="/assets/css/styles.css" />
     <link rel="stylesheet" href="/assets/css/dashboard.css" />
     <script src="/assets/js/dashboard.js" defer></script>
@@ -20,7 +16,7 @@
       <header class="dashboard-header">
         <a class="dashboard-wordmark" href="/">5S.<br />MOTION</a>
         <div class="dashboard-heading">
-          <span class="eyebrow">Workspace / Projects</span>
+          <span class="eyebrow">Workspace / Content</span>
           <h1>Dashboard</h1>
         </div>
         <div class="dashboard-header-actions">
@@ -30,13 +26,24 @@
       </header>
 
       <div class="dashboard-layout">
-        <aside class="dashboard-sidebar" aria-label="Daftar project">
-          <div class="sidebar-heading">
-            <span class="eyebrow">Project kamu</span>
-            <button class="add-project-button" type="button" data-new-project aria-label="Tambah project">+</button>
-          </div>
-          <nav class="dashboard-project-list" data-project-list></nav>
-          <!-- <p class="sidebar-note">Setiap perubahan tersimpan lokal di folder project ini.</p> -->
+        <aside class="dashboard-sidebar" aria-label="Navigasi dashboard">
+          <section aria-label="Projects">
+            <div class="sidebar-heading">
+              <span class="eyebrow">Project kamu</span>
+              <button class="add-project-button" type="button" data-new-project aria-label="Tambah project">+</button>
+            </div>
+            <nav class="dashboard-project-list" data-project-list aria-label="Daftar project"></nav>
+          </section>
+          <section class="sidebar-content-section" aria-label="Konten website">
+            <div class="sidebar-heading">
+              <span class="eyebrow">Konten website</span>
+            </div>
+            <nav class="dashboard-content-list" aria-label="Halaman website">
+              <button class="dashboard-content-link" type="button" data-content-tab="about" aria-pressed="false">About <span aria-hidden="true">↗</span></button>
+              <button class="dashboard-content-link" type="button" data-content-tab="contact" aria-pressed="false">Contact <span aria-hidden="true">↗</span></button>
+              <button class="dashboard-content-link" type="button" data-settings-tab aria-pressed="false">Font website <span aria-hidden="true">↗</span></button>
+            </nav>
+          </section>
         </aside>
 
         <section class="project-editor" aria-label="Editor project" data-editor hidden>
@@ -102,6 +109,153 @@
             <div class="media-grid" data-media-grid></div>
             <p class="empty-media" data-empty-media>Belum ada media. Tambahkan foto atau video untuk memulai.</p>
           </section>
+        </section>
+
+        <section class="content-editor" aria-label="Editor konten halaman" data-content-editor hidden>
+          <div class="editor-heading">
+            <div>
+              <span class="eyebrow">Website / <span data-content-editor-kicker>About</span></span>
+              <h2 data-content-editor-title>Edit About</h2>
+            </div>
+          </div>
+
+          <form class="content-form" data-content-form>
+            <div class="content-fields" data-content-fields="about">
+              <div class="form-grid">
+                <label class="form-field form-field--wide">
+                  <span>Label kecil</span>
+                  <input name="eyebrow" type="text" maxlength="80" required />
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Judul utama</span>
+                  <textarea name="title" rows="2" maxlength="120" required></textarea>
+                  <small>Gunakan baris baru untuk mengatur pemenggalan judul.</small>
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Perkenalan</span>
+                  <textarea name="intro" rows="3" maxlength="1200"></textarea>
+                </label>
+                <label class="form-field">
+                  <span>Label lokasi</span>
+                  <input name="locationLabel" type="text" maxlength="50" />
+                </label>
+                <label class="form-field">
+                  <span>Lokasi</span>
+                  <input name="location" type="text" maxlength="120" />
+                </label>
+                <label class="form-field">
+                  <span>Label praktik</span>
+                  <input name="practiceLabel" type="text" maxlength="50" />
+                </label>
+                <label class="form-field">
+                  <span>Praktik</span>
+                  <input name="practice" type="text" maxlength="120" />
+                </label>
+                <label class="form-field">
+                  <span>Label disiplin</span>
+                  <input name="disciplinesLabel" type="text" maxlength="50" />
+                </label>
+                <label class="form-field">
+                  <span>Disiplin</span>
+                  <input name="disciplines" type="text" maxlength="180" />
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Judul pendekatan</span>
+                  <input name="approachLabel" type="text" maxlength="50" />
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Pendekatan</span>
+                  <textarea name="approach" rows="3" maxlength="1200"></textarea>
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Judul layanan</span>
+                  <input name="servicesLabel" type="text" maxlength="50" />
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Layanan</span>
+                  <textarea name="services" rows="2" maxlength="600"></textarea>
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Tautan footer</span>
+                  <input name="footerCta" type="text" maxlength="80" />
+                </label>
+              </div>
+            </div>
+
+            <div class="content-fields" data-content-fields="contact" hidden>
+              <div class="form-grid">
+                <label class="form-field form-field--wide">
+                  <span>Label kecil</span>
+                  <input name="eyebrow" type="text" maxlength="80" required />
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Judul utama</span>
+                  <textarea name="title" rows="2" maxlength="120" required></textarea>
+                  <small>Gunakan baris baru untuk mengatur pemenggalan judul.</small>
+                </label>
+                <label class="form-field">
+                  <span>Judul kontak</span>
+                  <input name="businessLabel" type="text" maxlength="80" />
+                </label>
+                <label class="form-field">
+                  <span>Judul studio</span>
+                  <input name="studioLabel" type="text" maxlength="80" />
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Deskripsi kontak</span>
+                  <textarea name="businessDescription" rows="3" maxlength="800"></textarea>
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Email</span>
+                  <input name="email" type="email" maxlength="254" required />
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Lokasi studio</span>
+                  <textarea name="studioLocation" rows="2" maxlength="200"></textarea>
+                </label>
+                <label class="form-field form-field--wide">
+                  <span>Tautan footer</span>
+                  <input name="footerCta" type="text" maxlength="80" />
+                </label>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <span class="form-feedback" data-content-feedback role="status"></span>
+              <button class="save-project-button" type="submit" data-save-content>Simpan konten</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="content-editor" aria-label="Pengaturan font website" data-font-editor hidden>
+          <div class="editor-heading">
+            <div>
+              <span class="eyebrow">Website / Tipografi</span>
+              <h2>Font website</h2>
+            </div>
+          </div>
+
+          <form class="content-form" data-font-form>
+            <p class="font-instructions">
+              Masukkan nama font persis dari Google Fonts. Contoh: “Playfair Display” atau “DM Sans”.
+            </p>
+            <div class="form-grid">
+              <label class="form-field">
+                <span>Font heading</span>
+                <input name="headingFont" type="text" maxlength="80" pattern="[A-Za-z0-9](?:[A-Za-z0-9]|[ ]|-)*" placeholder="Playfair Display" required />
+                <small>Judul dan heading halaman.</small>
+              </label>
+              <label class="form-field">
+                <span>Font body</span>
+                <input name="bodyFont" type="text" maxlength="80" pattern="[A-Za-z0-9](?:[A-Za-z0-9]|[ ]|-)*" placeholder="DM Sans" required />
+                <small>Teks isi website.</small>
+              </label>
+            </div>
+            <div class="form-actions">
+              <span class="form-feedback" data-font-feedback role="status"></span>
+              <button class="save-project-button" type="submit" data-save-fonts>Simpan font</button>
+            </div>
+          </form>
         </section>
 
         <section class="dashboard-empty" data-empty-state>
