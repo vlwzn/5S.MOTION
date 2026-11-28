@@ -1,1 +1,17 @@
 /dist/
+/node_modules/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+projects.json.*.tmp
+site-content.json.*.tmp
+site-settings.json.*.tmp
